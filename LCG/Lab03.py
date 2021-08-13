@@ -1,39 +1,38 @@
 import random
 
-print("Ingrese el valor de a:")
-a = input()
-print("Ingrese el valor de b:")
-b = input()
-print("Ingrese el valor de N:")
-N = input()
+#print("Ingrese el valor del multiplicador:")
+#a = input()
+#print("Ingrese el valor del corrimiento:")
+#b = input()
+#print("Ingrese el valor del modulo:")
+#m = input()
+#print("Ingrese el valor de numeros a generar:")
+#N = input()
 
-
-
-def LCG(a, b, N):
+def LCG(a, b, m, N):
 	bc = '' 
-	t = 8 
-	k = 8 
-
+	t = 500000 
+	k = 8
 
 	try:
-		parse = list(map(int,[a, b, N])) 
+		parse = list(map(int,[a, b, m, N])) 
 		a = parse[0]
 		b = parse[1]
-		N = parse[2]
+		m = parse[2]
+		N = parse[3]
 	except:
 		return "Como que no funciona"
 	
-	x = random.randrange(200)%N
+	x = round(random.random() * 100) % N
 
 	for i in range(t): 
-		x = (a*x + b)%N # Segun la formula del lab
+		x = (a*x + b) % N  # Segun la formula del lab
 		binary = bin(x).replace('b','').zfill(k)
 		bc += binary
 
 	return bc
 
-
-print(LCG(a,b,N))
+print(LCG(2, 4, 5, 10))
 
 
 # Referncias del codigo
