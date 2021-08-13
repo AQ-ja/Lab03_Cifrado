@@ -68,11 +68,7 @@ def xor(a, b):
         c = c + str(int(a[i]) ^ int(b[i]))
     return c
 
-#d = 0.2960058968365409
-# print(bin(d))
 
-
-#print((Wichmann_Hill(s1, 50)))
 seed1 = np.random.randint(1, 30000)
 seed2 = np.random.randint(1, 30000)
 seed3 = np.random.randint(1, 30000)
@@ -85,12 +81,17 @@ J = J.resize((J.size[0]//2, J.size[1]//2), Image.LANCZOS)
 I = np.array(J)
 plt.figure()
 plt.imshow(I, cmap='gray')
-# plt.show()
+plt.show()
 
-
+print("aqi")
 bitsImage = img2bits(I)
+print("aqi")
+
 tam = len(bitsImage)
+print("aqi")
+
 s2 = Wichmann_Hill(semillas, tam)
+print("aqi")
 
 # s = np.random.choice(2, size=len(bitsImage))
 # s2 = ''
