@@ -157,7 +157,7 @@ tap_positions = [np.random.randint(1, 30000)]
 # Arreglo cambiante
 # Numero aleatorio del tamano de la semilla fuente para la funcioon LFSR
 # Cambiar para que cambie la imagen
-sizeinp_data = np.random.randint(1, 10)
+sizeinp_data = np.random.randint(1, 100)
 # Genera una lista de bits de longitud aleatoria para poder usarse en el generador de LFSR
 inp_data = np.random.randint(2, size=sizeinp_data)
 inp_data = [int(i) for i in inp_data]
