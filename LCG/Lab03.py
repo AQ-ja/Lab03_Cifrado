@@ -1,20 +1,19 @@
 import random
 
-def LCG(a, b, m, N):
+def LCG(a, b, N):
 	bc = '' 
-	t = 500000 
+	t = 16 
 	k = 8
 
 	try:
-		parse = list(map(int,[a, b, m, N])) 
+		parse = list(map(int,[a, b, N])) 
 		a = parse[0]
 		b = parse[1]
-		m = parse[2]
-		N = parse[3]
+		N = parse[2]
 	except:
 		return "Como que no funciona"
 	
-	x = round(random.random() * 100) % N
+	x = round(random.random() * 200) % N
 
 	for i in range(t): 
 		x = (a*x + b) % N  # Segun la formula del lab
@@ -23,7 +22,7 @@ def LCG(a, b, m, N):
 
 	return bc
 
-print(LCG(2, 4, 5, 10))
+print(LCG(2, 4, 1000))
 
 
 # Referncias del codigo
