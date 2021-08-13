@@ -1,3 +1,4 @@
+import random
 import numpy as np
 from skimage.data import camera
 from PIL import Image
@@ -69,29 +70,58 @@ def xor(a, b):
     return c
 
 
-import random
-
 def LCG(a, b, m, N):
-	bc = '' 
-	t = 500000 
-	k = 8
+    bc = ''
+    t = 500
+    k = 8
 
-	try:
-		parse = list(map(int,[a, b, m, N])) 
-		a = parse[0]
-		b = parse[1]
-		m = parse[2]
-		N = parse[3]
-	except:
-		return "Como que no funciona"
-	
-	x = round(random.random() * 100) % N
+    try:
+        parse = list(map(int, [a, b, m, N]))
+        a = parse[0]
+        b = parse[1]
+        m = parse[2]
+        N = parse[3]
+    except:
+        return "Como que no funciona"
 
-	for i in range(t): 
-		x = (a*x + b) % N  # Segun la formula del lab
-		binary = bin(x).replace('b','').zfill(k)
-		bc += binary
+    x = round(random.random() * 100) % N
 
-	return bc
+    for i in range(t):
+        x = (a*x + b) % N  # Segun la formula del lab
+        binary = bin(x).replace('b', '').zfill(k)
+        bc += binary
+
+    return bc
+
 
 print(LCG(2, 4, 5, 10))
+
+
+# I = camera()
+# J = Image.fromarray(I)
+# J = J.resize((J.size[0]//2, J.size[1]//2), Image.LANCZOS)
+# I = np.array(J)
+# plt.figure()
+# plt.imshow(I, cmap='gray')
+# plt.show()
+# bitsImage = img2bits(I)
+# s2 = LCG(2, 4, 5, 10, len(bitsImage))
+# s3 = xor(bitsImage, s2)
+
+# I2 = bits2img(s2, I.shape)
+# I3 = bits2img(s3, I.shape)
+# I1 = bits2img(xor(s2, s3), I.shape)
+
+# plt.figure(figsize=(15, 8))
+# plt.subplot(1, 2, 1)
+# plt.imshow(I2, cmap='gray')
+# plt.subplot(1, 2, 2)
+# plt.imshow(I3, cmap='gray')
+# plt.show()
+
+# plt.figure(figsize=(15, 8))
+# plt.subplot(1, 2, 1)
+# plt.imshow(I1, cmap='gray')
+# plt.subplot(1, 2, 2)
+# plt.imshow(I3-I2, cmap='gray')
+# plt.show()
