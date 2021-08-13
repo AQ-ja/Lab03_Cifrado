@@ -5,6 +5,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import re
 
+# Funcion de convertir bits a imagen
+
 
 def bits2img(x, shape):
 
@@ -16,6 +18,8 @@ def bits2img(x, shape):
     I = I.reshape(m, n)
     return I
 
+# Funcion de convertir imagen a bits
+
 
 def img2bits(I):
 
@@ -25,6 +29,8 @@ def img2bits(I):
         for j in range(0, n):
             s = s + '{0:08b}'.format(I[i, j])
     return s
+
+# Generador pseudo aleatorio Wichmann_Hill
 
 
 def Wichmann_Hill(seedlst, listlength):
@@ -54,6 +60,8 @@ def Wichmann_Hill(seedlst, listlength):
 
     return numlist
 
+# Funcion XOR de dos cadenas
+
 
 def xor(a, b):
     m = len(a)
@@ -68,6 +76,8 @@ def xor(a, b):
     for i in range(0, maxx):
         c = c + str(int(a[i]) ^ int(b[i]))
     return c
+
+# Funcion de generador pseudo aleatorio LCG
 
 
 def LCG(a, b, N):
@@ -92,6 +102,8 @@ def LCG(a, b, N):
 
     return bc
 
+# Funcion XOR de LFSR
+
 
 def xorLFSR(temp_list1, inp_leng, tap_positions, temp_list2):
     xorLFSR = temp_list1[inp_leng-1]
@@ -99,6 +111,8 @@ def xorLFSR(temp_list1, inp_leng, tap_positions, temp_list2):
         xorLFSR = temp_list1[tap_positions[i]] ^ xorLFSR
     temp_list2.append(xorLFSR)
     return temp_list2
+
+# Funcion de generador de LFSR
 
 
 def LFSR(bits, tap_positions, inp_data, op_bits):
@@ -133,16 +147,25 @@ J = J.resize((J.size[0]//2, J.size[1]//2), Image.LANCZOS)
 I = np.array(J)
 plt.figure()
 plt.imshow(I, cmap='gray')
+# Imagen Original
 plt.show()
 bitsImage = img2bits(I)
-
+# Numero aleatorio para la funcion LFSR
 bits = np.random.randint(1, 30000)
+# Numero aleatorio para la funcion LFSR
 tap_positions = [np.random.randint(1, 30000)]
-inp_data = [1, 0, 1, 0, 1]
+# Arreglo cambiante
+# Numero aleatorio del tamano de la semilla fuente para la funcioon LFSR
+# Cambiar para que cambie la imagen
+sizeinp_data = np.random.randint(1, 10)
+# Genera una lista de bits de longitud aleatoria para poder usarse en el generador de LFSR
+inp_data = np.random.randint(2, size=sizeinp_data)
 inp_data = [int(i) for i in inp_data]
 op_bits = len(bitsImage)
-
+# Llama a la funcion LFSR
 s2 = LFSR(bits, tap_positions, inp_data, op_bits)
+print("Se pobro con la semilla ", inp_data, "con el generador LFSR")
+# Realiza un XOR entre la cadena de bits de la imagen y la cadina de bits del generador
 s3 = xor(bitsImage, s2)
 
 I2 = bits2img(s2, I.shape)

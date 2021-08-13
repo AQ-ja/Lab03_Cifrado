@@ -41,9 +41,12 @@ def LFSR(bits, tap_positions, inp_data, op_bits):
 
 bits = np.random.randint(1, 30000)
 tap_positions = [np.random.randint(1, 30000)]
-inp_data = [1, 0, 1, 0, 1]
+inp_data = np.random.randint(2, size=5)
 inp_data = [int(i) for i in inp_data]
 op_bits = input("Number of clock cycles:")
 print(inp_data)
 print(tap_positions)
 print(LFSR(bits, tap_positions, inp_data, op_bits))
+
+x = np.random.randint(2, size=5)
+print(x)
