@@ -5,22 +5,17 @@ import numpy as np
 global tap_positions
 
 
-def LFSR(inp_data, op_bits):
+def xorLFSR(temp_list1, inp_leng, tap_positions, temp_list2):
+    xorLFSR = temp_list1[inp_leng-1]
+    for i in range(len(tap_positions)-1):
+        xorLFSR = temp_list1[tap_positions[i]] ^ xorLFSR
+    temp_list2.append(xorLFSR)
+    return temp_list2
 
-    bits = np.random.randint(1, 30000)
-    tap_positions = np.random.randint(1, 30000)
-    inp_data = inp_data
-    inp_data = [int(i) for i in inp_data]
-    op_bits = op_bits
+
+def LFSR(bits, tap_positions, inp_data, op_bits):
 
     tap_positions = [int(i) for i in tap_positions]
-
-    def xor():
-        xor = temp_list1[inp_leng-1]
-        for i in range(len(tap_positions)-1):
-            xor = temp_list1[tap_positions[i]] ^ xor
-        temp_list2.append(xor)
-        return temp_list2
 
     inp_data.insert(0, inp_data[len(inp_data)-1])
     inp_data.pop()
@@ -31,7 +26,7 @@ def LFSR(inp_data, op_bits):
     temp_list2 = []
     for i in range(int(op_bits)):
         output.insert(0, temp_list1[inp_leng-1])
-        xor()
+        xorLFSR(temp_list1, inp_leng, tap_positions, temp_list2)
         for i in range(inp_leng - 1):
             temp_list2.append(temp_list1[i])
 
@@ -41,7 +36,14 @@ def LFSR(inp_data, op_bits):
     output.pop()
     output.reverse()
     output_data = ''.join(str(x) for x in output)
-    print(output_data)
+    return output_data
 
 
-print(len(output_data))
+bits = np.random.randint(1, 30000)
+tap_positions = [np.random.randint(1, 30000)]
+inp_data = [1, 0, 1, 0, 1]
+inp_data = [int(i) for i in inp_data]
+op_bits = input("Number of clock cycles:")
+print(inp_data)
+print(tap_positions)
+print(LFSR(bits, tap_positions, inp_data, op_bits))

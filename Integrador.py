@@ -70,58 +70,95 @@ def xor(a, b):
     return c
 
 
-import random
-
 def LCG(a, b, N):
-	bc = '' 
-	t = 16 
-	k = 8
+    bc = ''
+    t = 16
+    k = 8
 
-	try:
-		parse = list(map(int,[a, b, N])) 
-		a = parse[0]
-		b = parse[1]
-		N = parse[2]
-	except:
-		return "Como que no funciona"
-	
-	x = round(random.random() * 200) % N
+    try:
+        parse = list(map(int, [a, b, N]))
+        a = parse[0]
+        b = parse[1]
+        N = parse[2]
+    except:
+        return "Como que no funciona"
 
-	for i in range(t): 
-		x = (a*x + b) % N  # Segun la formula del lab
-		binary = bin(x).replace('b','').zfill(k)
-		bc += binary
+    x = round(random.random() * 200) % N
 
-	return bc
+    for i in range(t):
+        x = (a*x + b) % N  # Segun la formula del lab
+        binary = bin(x).replace('b', '').zfill(k)
+        bc += binary
 
-print(LCG(2, 4, 1000))
+    return bc
 
 
-# I = camera()
-# J = Image.fromarray(I)
-# J = J.resize((J.size[0]//2, J.size[1]//2), Image.LANCZOS)
-# I = np.array(J)
-# plt.figure()
-# plt.imshow(I, cmap='gray')
-# plt.show()
-# bitsImage = img2bits(I)
-# s2 = LCG(2, 4, 5, 10, len(bitsImage))
-# s3 = xor(bitsImage, s2)
+def xorLFSR(temp_list1, inp_leng, tap_positions, temp_list2):
+    xorLFSR = temp_list1[inp_leng-1]
+    for i in range(len(tap_positions)-1):
+        xorLFSR = temp_list1[tap_positions[i]] ^ xorLFSR
+    temp_list2.append(xorLFSR)
+    return temp_list2
 
-# I2 = bits2img(s2, I.shape)
-# I3 = bits2img(s3, I.shape)
-# I1 = bits2img(xor(s2, s3), I.shape)
 
-# plt.figure(figsize=(15, 8))
-# plt.subplot(1, 2, 1)
-# plt.imshow(I2, cmap='gray')
-# plt.subplot(1, 2, 2)
-# plt.imshow(I3, cmap='gray')
-# plt.show()
+def LFSR(bits, tap_positions, inp_data, op_bits):
 
-# plt.figure(figsize=(15, 8))
-# plt.subplot(1, 2, 1)
-# plt.imshow(I1, cmap='gray')
-# plt.subplot(1, 2, 2)
-# plt.imshow(I3-I2, cmap='gray')
-# plt.show()
+    tap_positions = [int(i) for i in tap_positions]
+
+    inp_data.insert(0, inp_data[len(inp_data)-1])
+    inp_data.pop()
+
+    output = [0]
+    inp_leng = len(inp_data)
+    temp_list1 = inp_data
+    temp_list2 = []
+    for i in range(int(op_bits)):
+        output.insert(0, temp_list1[inp_leng-1])
+        xorLFSR(temp_list1, inp_leng, tap_positions, temp_list2)
+        for i in range(inp_leng - 1):
+            temp_list2.append(temp_list1[i])
+
+        temp_list1 = temp_list2
+        temp_list2 = []
+
+    output.pop()
+    output.reverse()
+    output_data = ''.join(str(x) for x in output)
+    return output_data
+
+
+I = camera()
+J = Image.fromarray(I)
+J = J.resize((J.size[0]//2, J.size[1]//2), Image.LANCZOS)
+I = np.array(J)
+plt.figure()
+plt.imshow(I, cmap='gray')
+plt.show()
+bitsImage = img2bits(I)
+
+bits = np.random.randint(1, 30000)
+tap_positions = [np.random.randint(1, 30000)]
+inp_data = [1, 0, 1, 0, 1]
+inp_data = [int(i) for i in inp_data]
+op_bits = len(bitsImage)
+
+s2 = LFSR(bits, tap_positions, inp_data, op_bits)
+s3 = xor(bitsImage, s2)
+
+I2 = bits2img(s2, I.shape)
+I3 = bits2img(s3, I.shape)
+I1 = bits2img(xor(s2, s3), I.shape)
+
+plt.figure(figsize=(15, 8))
+plt.subplot(1, 2, 1)
+plt.imshow(I2, cmap='gray')
+plt.subplot(1, 2, 2)
+plt.imshow(I3, cmap='gray')
+plt.show()
+
+plt.figure(figsize=(15, 8))
+plt.subplot(1, 2, 1)
+plt.imshow(I1, cmap='gray')
+plt.subplot(1, 2, 2)
+plt.imshow(I3-I2, cmap='gray')
+plt.show()
