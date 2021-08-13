@@ -1,14 +1,5 @@
 import random
 
-#print("Ingrese el valor del multiplicador:")
-#a = input()
-#print("Ingrese el valor del corrimiento:")
-#b = input()
-#print("Ingrese el valor del modulo:")
-#m = input()
-#print("Ingrese el valor de numeros a generar:")
-#N = input()
-
 def LCG(a, b, m, N):
 	bc = '' 
 	t = 500000 
